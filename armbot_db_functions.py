@@ -49,13 +49,13 @@ def remove_client_by_email(client_email):
             return 'Not found'
 
 
-def insert_product(product):
+def insert_product_to_db(product):
     with conn:
         c.execute('INSERT INTO products VALUES (:productid, :name, :desc, :sizes , :price, :estoque)',
                   {'productid': product.productid, 'name': product.name, 'desc': product.desc, 'sizes': product.sizes, 'price': product.price, 'estoque': product.estoque})
 
 
-def insert_to_cart(userid, productid, quantity):
+def insert_product_to_cart(userid, productid, quantity):
     with conn:
         cart = get_cart(userid)
         for item in cart:
