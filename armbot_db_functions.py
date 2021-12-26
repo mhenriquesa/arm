@@ -33,16 +33,16 @@ def insert_to_cart(userid, productid, quantity):
                   'userid': userid, 'productid': productid, 'quantity': quantity})
 
 
-def remove_from_cart(userid, productid):
+def remove_from_cart(userid, productid, quantity):
     with conn:
         cart = get_cart(userid)
         for item in cart:
-            if item[1] == productid and item[2] == 1:
+            if item[1] == productid and item[2] - quantity == 0:
                 c.execute('DELETE FROM carrinho WHERE userid = :userid AND productid = :productid', {
                           'userid': userid, 'productid': productid})
                 return
             if item[1] == productid:
-                c.execute(f'UPDATE carrinho SET quantity = quantity - 1 WHERE userid=:userid AND productid=:productid',
+                c.execute(f'UPDATE carrinho SET quantity = quantity - {quantity} WHERE userid=:userid AND productid=:productid',
                           {'userid': userid, 'productid': productid})
                 return
 
@@ -104,7 +104,7 @@ def get_product_by_id(productid):
 # insert_to_cart(2, 'c10')
 # insert_to_cart(2, 'c10')
 # insert_to_cart(4, 'c10')
-# insert_to_cart(2, 'c15', 1)
-# remove_from_cart(4, 'c10')
+insert_to_cart(2, 'c15', 3)
+# remove_from_cart(2, 'c15', 6)
 print(get_cart(2))
 conn.close()
