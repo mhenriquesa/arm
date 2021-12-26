@@ -1,6 +1,5 @@
 import sqlite3
-from armbot_classes_Clients import Clients
-from armbot_classes_Product import Product
+from armbot_classes import Clients
 
 conn = sqlite3.connect('armbot_db.db')
 
@@ -119,7 +118,9 @@ def get_client_by_email(client_email):
 def get_client_by_phone(client_phone):
     c.execute('SELECT * FROM clients WHERE phone=:phone',
               {'phone': client_phone})
-    return c.fetchall()
+    client = c.fetchall()
+    print(client)
+    return client
 
 
 def get_product_by_id(productid):
@@ -130,11 +131,8 @@ def get_product_by_id(productid):
 
 
 client1 = Clients('MH Filho', 'aaaa', 999)
-# prod1 = Product('c15', 'Calça Pantalona Jeans',
-#                 'Calça jeans da moda', '38 40 42 44', 139, True)
 
-insert_client_to_db(client1)
-# insert_to_cart(1, 'c10', 3)
-# remove_client_by_phone(999)
+
+get_client_by_phone(999)
 
 conn.close()
