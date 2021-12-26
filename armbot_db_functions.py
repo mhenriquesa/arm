@@ -9,10 +9,15 @@ c = conn.cursor()
 conn.execute('PRAGMA foreign_keys = ON')
 
 
-def insert_client(client):
+def insert_client_to_db(user_data):
     with conn:
-        c.execute('INSERT INTO clients VALUES (:id, :name, :phone, :email)',
-                  {'id': None, 'name': client.name, 'email': client.email, 'phone': client.phone})
+        user_found = get_client_by_email(user_data.email)
+        if user_found:
+            print('Cliente ja cadastrado')
+            return "Cliente ja cadastrado!"
+        else:
+            c.execute('INSERT INTO clients VALUES (:id, :name, :phone, :email)',
+                      {'id': None, 'name': user_data.name, 'email': user_data.email, 'phone': user_data.phone})
 
 
 def insert_product(product):
@@ -75,15 +80,15 @@ def remove_client_by_email(client):
                   'email': client.email})
 
 
-def get_client_by_email(client):
+def get_client_by_email(client_email):
     c.execute('SELECT * FROM clients WHERE email=:email',
-              {'email': client.email})
+              {'email': client_email})
     return c.fetchall()
 
 
-def get_client_by_phone(client):
+def get_client_by_phone(client_phone):
     c.execute('SELECT * FROM clients WHERE phone=:phone',
-              {'phone': client.phone})
+              {'phone': client_phone.phone})
     return c.fetchall()
 
 
@@ -94,17 +99,18 @@ def get_product_by_id(productid):
     return c.fetchall()
 
 
-# client1 = Clients('Filho', 'wwwww', 5656)
+client1 = Clients('Ana Ramos', 'www', 11999999)
 # prod1 = Product('c15', 'Calça Pantalona Jeans',
 #                 'Calça jeans da moda', '38 40 42 44', 139, True)
 # insert_product(prod1)
-# insert_client(client1)
 # insert_to_cart(2, 'c15')
 # insert_to_cart(2, 'c15')
 # insert_to_cart(2, 'c10')
 # insert_to_cart(2, 'c10')
 # insert_to_cart(4, 'c10')
-insert_to_cart(2, 'c15', 3)
+# insert_to_cart(2, 'c15', 3)
 # remove_from_cart(2, 'c15', 6)
-print(get_cart(2))
+insert_client_to_db(client1)
+# get_client_by_email('bbbb')
+# print(get_cart(2))
 conn.close()
