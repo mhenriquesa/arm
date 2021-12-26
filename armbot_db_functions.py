@@ -10,20 +10,31 @@ conn.execute('PRAGMA foreign_keys = ON')
 
 
 def insert_client_to_db(user_data):
-    with conn:
-        user_found = get_client_by_email(user_data.email)
-        if user_found:
-            print('Cliente ja cadastrado')
-            return "Cliente ja cadastrado!"
-        else:
+    user_found = get_client_by_phone(user_data.phone)
+    if user_found:
+        print('Cliente ja cadastrado')
+        return "Cliente ja cadastrado!"
+    else:
+        with conn:
             c.execute('INSERT INTO clients VALUES (:id, :name, :phone, :email)',
                       {'id': None, 'name': user_data.name, 'email': user_data.email, 'phone': user_data.phone})
+            print('cliente cadastrado')
 
 
-def remove_client_by_phone(client):
+def remove_client_by_phone(client_phone):
     with conn:
-        c.execute('DELETE FROM clients WHERE phone=:phone', {
-                  'phone': client.phone})
+        user_found = get_client_by_phone(client_phone)
+        if user_found:
+            userid = user_found[0][0]
+
+            clean_cart(userid)
+            c.execute('DELETE FROM clients WHERE phone=:phone', {
+                'phone': client_phone})
+            print('cliente removido')
+
+            return
+        else:
+            print('cliente nao encontrado')
 
 
 def remove_client_by_email(client_email):
@@ -71,6 +82,18 @@ def remove_from_cart(userid, productid, quantity):
                 return
 
 
+def clean_cart(userid):
+    has_product = get_cart(userid)
+    if has_product:
+        with conn:
+            c.execute('DELETE FROM carrinho WHERE userid = :userid',
+                      {'userid': userid})
+            print('carrinho acabou de ser limpo')
+            return
+    else:
+        print('carrinho limpo')
+
+
 def get_cart(userid):
     with conn:
         c.execute('''SELECT carrinho.userid, carrinho.productid, carrinho.quantity , products.name, products.price
@@ -95,7 +118,7 @@ def get_client_by_email(client_email):
 
 def get_client_by_phone(client_phone):
     c.execute('SELECT * FROM clients WHERE phone=:phone',
-              {'phone': client_phone.phone})
+              {'phone': client_phone})
     return c.fetchall()
 
 
@@ -106,19 +129,12 @@ def get_product_by_id(productid):
     return c.fetchall()
 
 
-client1 = Clients('Ana Ramos', 'www', 11999999)
+client1 = Clients('MH Filho', 'aaaa', 999)
 # prod1 = Product('c15', 'Calça Pantalona Jeans',
 #                 'Calça jeans da moda', '38 40 42 44', 139, True)
-# insert_product(prod1)
-# insert_to_cart(2, 'c15')
-# insert_to_cart(2, 'c15')
-# insert_to_cart(2, 'c10')
-# insert_to_cart(2, 'c10')
-# insert_to_cart(4, 'c10')
-# insert_to_cart(2, 'c15', 3)
-# remove_from_cart(2, 'c15', 6)
-# insert_client_to_db(client1)
-remove_client_by_email('www')
-# get_client_by_email('bbbb')
-# print(get_cart(2))
+
+insert_client_to_db(client1)
+# insert_to_cart(1, 'c10', 3)
+# remove_client_by_phone(999)
+
 conn.close()
