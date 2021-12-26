@@ -20,6 +20,25 @@ def insert_client_to_db(user_data):
                       {'id': None, 'name': user_data.name, 'email': user_data.email, 'phone': user_data.phone})
 
 
+def remove_client_by_phone(client):
+    with conn:
+        c.execute('DELETE FROM clients WHERE phone=:phone', {
+                  'phone': client.phone})
+
+
+def remove_client_by_email(client_email):
+    with conn:
+        user_found = get_client_by_email(client_email)
+        if user_found:
+            c.execute('DELETE FROM clients WHERE email=:email', {
+                'email': client_email})
+            print('Usuario removido')
+            return
+        else:
+            print('Usuario nao encontrado')
+            return 'Not found'
+
+
 def insert_product(product):
     with conn:
         c.execute('INSERT INTO products VALUES (:productid, :name, :desc, :sizes , :price, :estoque)',
@@ -62,22 +81,10 @@ def get_cart(userid):
         return c.fetchall()
 
 
-def remove_client_by_phone(client):
-    with conn:
-        c.execute('DELETE FROM clients WHERE phone=:phone', {
-                  'phone': client.phone})
-
-
 def remove_product_by_id(product):
     with conn:
         c.execute('DELETE FROM products WHERE productid=:productid', {
                   'productid': product.productid})
-
-
-def remove_client_by_email(client):
-    with conn:
-        c.execute('DELETE FROM clients WHERE email=:email', {
-                  'email': client.email})
 
 
 def get_client_by_email(client_email):
@@ -110,7 +117,8 @@ client1 = Clients('Ana Ramos', 'www', 11999999)
 # insert_to_cart(4, 'c10')
 # insert_to_cart(2, 'c15', 3)
 # remove_from_cart(2, 'c15', 6)
-insert_client_to_db(client1)
+# insert_client_to_db(client1)
+remove_client_by_email('www')
 # get_client_by_email('bbbb')
 # print(get_cart(2))
 conn.close()
