@@ -1,5 +1,6 @@
 import sqlite3
-from armbot_classes import Clients
+from webhookserver.models import Client
+
 
 conn = sqlite3.connect('armbot_db.db')
 
@@ -116,11 +117,8 @@ def get_client_by_email(client_email):
 
 
 def get_client_by_phone(client_phone):
-    c.execute('SELECT * FROM clients WHERE phone=:phone',
-              {'phone': client_phone})
-    client = c.fetchall()
-    print(client)
-    return client
+    print(dir(Client.query.filter_by(phone=client_phone).all()[0]))
+    # print(Client.query.all())
 
 
 def get_product_by_id(productid):
@@ -129,10 +127,5 @@ def get_product_by_id(productid):
     print(c.fetchall())
     return c.fetchall()
 
-
-client1 = Clients('MH Filho', 'aaaa', 999)
-
-
-get_client_by_phone(999)
 
 conn.close()
