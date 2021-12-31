@@ -7,14 +7,15 @@ import json
 
 main = Blueprint('main', __name__)
 
-# def products_in_cart_by_id(clientid, )
 
+@main.route('/')
+def hello_world():
 
-@main.route('/')  # this is the home page route
-def hello_world():  # this is the home page function that generates the page code
+    Cart.add(2, "L12", 2)
+    # Cart.remove(2, "L10", 4)
+    # Cart.get_cart(2)
 
-    # Cart.add(2, "L10", 5)
-    Cart.remove(2, "L10", 1)
+    # Cart.get_cart(2)
 
     return "Hello world!"
 

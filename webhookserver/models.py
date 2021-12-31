@@ -46,26 +46,19 @@ class Products(db.Model):
     photo = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
-        return f"User('{self.id}', '{self.name}', '{self.price}')"
+        return f"Product('{self.id}', '{self.name}', '{self.price}')"
 
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).all()
 
-    def add(self):
-        db.session.add(self)
-        db.session.commit()
-
 
 class Cart(db.Model):
     Rowid = db.Column(db.Integer, primary_key=True)
-
     clientid = db.Column(db.Integer, db.ForeignKey(
         'client.id'), nullable=False)
-
     productid = db.Column(db.String(10), db.ForeignKey(
         'products.id'), nullable=False)
-
     quantity = db.Column(db.Integer,  nullable=False)
 
     def __init__(self, clientid, productid, quantity):
@@ -74,12 +67,28 @@ class Cart(db.Model):
         self. quantity = quantity
 
     def __repr__(self):
-        return f"User('{self.clientid}', '{self.productid}', '{self.quantity}')"
+        return f"Cart('{self.clientid}', '{self.productid}', '{self.quantity}')"
 
     @classmethod
     def find(cls, clientid, productid):
-        return db.session.query(Cart).filter(
-            Cart.clientid == clientid and Cart.productid == productid).all()
+        result = cls.query.filter_by(
+            clientid=clientid, productid=productid).all()
+        print(result)
+        return result
+
+    @classmethod
+    def get_cart(cls, clientid):
+        result = db.session.query(Cart, Products).join(
+            Products).filter(Cart.clientid == clientid).all()
+
+        for cart, product in result:
+            print(f"""
+                    Produto: {product.name}
+                    Codigo do produto: {product.id}
+                    Quantidade: {cart.quantity}
+                    Preço: {product.price}
+                    Tamanho: {product.tamanho}
+                    Cor: {product.cor}""")
 
     @classmethod
     def remove(cls, clientid, productid, quantity):
@@ -98,6 +107,11 @@ class Cart(db.Model):
 
     @classmethod
     def add(cls, clientid, productid, quantity):
+        product_exists = Products.find_by_id(productid)
+        if not product_exists:
+            print("Esse produto nao existe em nossa loja")
+            return
+
         product_in_cart = cls.find(clientid, productid)
 
         if product_in_cart:
