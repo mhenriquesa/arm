@@ -26,6 +26,9 @@ class Client(db.Model):
     def find_by_phone(cls, phone):
         return cls.query.filter_by(phone=phone).all()
 
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).all()
+
     def add(self):
         db.session.add(self)
         db.session.commit()
