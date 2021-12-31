@@ -83,15 +83,21 @@ class Cart(db.Model):
     def get_cart(cls, clientid):
         result = db.session.query(Cart, Products).join(
             Products).filter(Cart.clientid == clientid).all()
-
+        cartstr = ""
         for cart, product in result:
-            print(f"""
-                    Produto: {product.name}
-                    Codigo do produto: {product.id}
-                    Quantidade: {cart.quantity}
-                    Preço: {product.price}
-                    Tamanho: {product.tamanho}
-                    Cor: {product.cor}""")
+            cartstr += f"""
+                Produto: {product.name}
+                Codigo do produto: {product.id}
+                Quantidade: {cart.quantity}
+                Preço: {product.price}
+                Tamanho: {product.tamanho}
+                Cor: {product.cor}
+                ========================
+                    """
+        return {
+            "fulfillmentText": f"{cartstr}",
+            "source": 'webhook'
+        }
 
     @classmethod
     def remove(cls, clientid, productid, quantity):

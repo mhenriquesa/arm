@@ -1,6 +1,5 @@
-from flask import request
-import requests
 import json
+import requests
 
 menviourl = "https://www.melhorenvio.com.br/api/v2/me/shipment/calculate"
 
@@ -49,8 +48,6 @@ def calcular_frete(req):
     else:
         valorpac = data[0]['price']
 
-    #print(data[0]['company']['name'], data[1])
-    #fretesedex = data[0]['company']['name'], data[0]
     return {
         "fulfillmentText": f''' 
           O frete de São Paulo para o cep {cepdestino}  fica:

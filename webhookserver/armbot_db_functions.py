@@ -117,8 +117,7 @@ def get_client_by_email(client_email):
 
 
 def get_client_by_phone(client_phone):
-    print(dir(Client.query.filter_by(phone=client_phone).all()[0]))
-    # print(Client.query.all())
+    print(Client.query.filter_by(phone=client_phone).all()[0])
 
 
 def get_product_by_id(productid):
