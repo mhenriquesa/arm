@@ -1,17 +1,21 @@
 from flask import request, Response, Blueprint
+from sqlalchemy.orm import session
 import webhookserver.armbot_db_functions
-from webhookserver.models import Client
+from webhookserver.models import Client, Cart, Products
 from webhookserver import db
-
+import json
 
 main = Blueprint('main', __name__)
+
+# def products_in_cart_by_id(clientid, )
 
 
 @main.route('/')  # this is the home page route
 def hello_world():  # this is the home page function that generates the page code
-    user1 = Client(username="Filho", email="zzzzz", phone="1111")
-    db.session.add(user1)
-    db.session.commit()
+
+    # Cart.add(2, "L10", 5)
+    Cart.remove(2, "L10", 1)
+
     return "Hello world!"
 
 
