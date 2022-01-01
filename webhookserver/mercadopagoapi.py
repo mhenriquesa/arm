@@ -1,7 +1,7 @@
 import mercadopago
+from os import getenv
 
-sdk = mercadopago.SDK(
-    "TEST-4019755699686949-122117-d66a5a2dea08328238ef6a022782e5c5-475891059")
+sdk = mercadopago.SDK(getenv('ARMMP'))
 
 # Cria um item na preferência
 preference_data = {
