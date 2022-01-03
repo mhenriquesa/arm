@@ -1,6 +1,7 @@
 from flask import request, Response, Blueprint
 from webhookserver.melhorenvioapi import calcular_frete
-from webhookserver.models import Client, Cart
+from webhookserver.models import Client, Cart, Products
+import json
 
 main = Blueprint('main', __name__)
 
@@ -14,6 +15,10 @@ def hello_world():
 def botwebhook():
     data = request.get_json(silent=True, force=True)
     action = data['queryResult']['action']
+    intent = data['queryResult']['intent']['displayName']
+    categorie = data['queryResult']['parameters']['itemescolhido']
+
+    # if action == 'querverfoto':
 
     if action == "ver_carrinho":
         client_phone = int(data['queryResult']['parameters']['telefone'])
