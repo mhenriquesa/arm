@@ -77,7 +77,25 @@ class Products(db.Model):
 
     @classmethod
     def get_categorie(cls, categorie):
-        return cls.query.filter_by(cat=categorie).all()
+        prods = cls.query.filter_by(cat=categorie).all()
+        prodstr = ''
+
+        for product in prods:
+            prodstr += f"""
+                Cód do produto: {product.id}
+                Cód do produto: {product.cat + ' ' + product.subcat}
+                Descrição: {product.tamanhos}
+                Preço: {product.price}
+                Tamanho: {product.tamanhos}
+                Fotos aqui -> : {product.link}
+                ========================
+                    """
+        return {
+            "fulfillmentText": f"{prodstr}",
+            "source": 'webhook'
+        }
+
+        return
 
     def create_prod(self):
         db.session.add(self)

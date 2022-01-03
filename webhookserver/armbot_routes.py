@@ -7,8 +7,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def hello_world():
-    prod = Products('c13', 'Calça', 'Jeans', 'Modeladora',
-                    139, 'P M G GG', 'http', 'https', 1)
+    prod = Products('L13', 'Calça', 'Legging', 'Modeladora Compressora',
+                    139, 'P M G GG', 'http2', 'https4', 1)
 
     Products.create_prod(prod)
     return "Hello world!"
@@ -22,9 +22,7 @@ def botwebhook():
     categorie = data['queryResult']['parameters']['itemescolhido']
 
     if action == 'querverfoto':
-
-        produtos = Products.get_categorie(categorie)
-        print(produtos)
+        return Products.get_categorie(categorie)
 
     if action == "ver_carrinho":
         client_phone = int(data['queryResult']['parameters']['telefone'])
