@@ -26,6 +26,7 @@ class Client(db.Model):
     def find_by_phone(cls, phone):
         return cls.query.filter_by(phone=phone).all()
 
+    @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).all()
 

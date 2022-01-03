@@ -12,5 +12,18 @@ wcapi = API(
     version="wc/v3"
 )
 
-r = wcapi.get("orders")
-orders = r.json()
+
+def get_orders():
+    r = wcapi.get("orders").json
+
+
+def create_product(data):
+    data = {
+        "name": data.name,
+        "type": "simple",
+        "regular_price": data.regularprice,
+        "description": data.desc,
+        "categories": data.categories,
+        "images": data.images
+    }
+    print(wcapi.post("products", data).json())
