@@ -25,6 +25,8 @@ def botwebhook():
     if action == "consultar_frete":
         return calcular_frete(data)
 
+    return Response(status=200)
+
 
 @main.route('/mercadopago_webhook', methods=['POST'])
 def mercadopagowebhook():
