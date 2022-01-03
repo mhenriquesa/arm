@@ -57,12 +57,31 @@ class Products(db.Model):
     link = db.Column(db.Text, nullable=False)
     estoque = db.Column(db.Integer, nullable=False)
 
+    def __init__(self, id, cat, subcat, desc, price, tamanhos, photo, link, estoque):
+        self.id = id
+        self.cat = cat
+        self.subcat = subcat
+        self.desc = desc
+        self.price = price
+        self.tamanhos = tamanhos
+        self.photo = photo
+        self.link = link
+        self.estoque = estoque
+
     def __repr__(self):
         return f"Product('{self.id}', '{self.cat}','{self.subcat}', '{self.price}')"
 
     @classmethod
     def find_by_id(cls, id):
         return cls.query.filter_by(id=id).all()
+
+    @classmethod
+    def get_categorie(cls, categorie):
+        return cls.query.filter_by(cat=categorie).all()
+
+    def create_prod(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class Cart(db.Model):
