@@ -6,6 +6,13 @@ class Client(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.Integer, unique=True, nullable=False)
+    cep = db.Column(db.String(8))
+    logradouro = db.Column(db.Text)
+    numero = db.Column(db.String(7))
+    complemento = db.Column(db.Text)
+    bairro = db.Column(db.String(20))
+    cidade = db.Column(db.String(20))
+    estado = db.Column(db.String(20))
 
     def __init__(self, name, email, phone):
         self.name = name
@@ -41,16 +48,17 @@ class Client(db.Model):
 
 class Products(db.Model):
     id = db.Column(db.String(10), unique=True, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    cat = db.Column(db.String(15), nullable=False)
+    subcat = db.Column(db.String(15), nullable=False)
     desc = db.Column(db.String(120), nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    estoque = db.Column(db.Integer, nullable=False)
-    tamanho = db.Column(db.String(2), nullable=False)
-    cor = db.Column(db.String(10), nullable=False)
+    tamanhos = db.Column(db.String(8), nullable=False)
     photo = db.Column(db.Text, nullable=False)
+    link = db.Column(db.Text, nullable=False)
+    estoque = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"Product('{self.id}', '{self.name}', '{self.price}')"
+        return f"Product('{self.id}', '{self.cat}','{self.subcat}', '{self.price}')"
 
     @classmethod
     def find_by_id(cls, id):
