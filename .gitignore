@@ -1,3 +1,6 @@
 __pycache__
 node_modules
 venv
+session.json
+private_key.json
+.env

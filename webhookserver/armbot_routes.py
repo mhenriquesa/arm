@@ -19,9 +19,9 @@ def botwebhook():
     data = request.get_json(silent=True, force=True)
     action = data['queryResult']['action']
     intent = data['queryResult']['intent']['displayName']
-    categorie = data['queryResult']['parameters']['itemescolhido']
 
     if action == 'querverfoto':
+        categorie = data['queryResult']['parameters']['itemescolhido']
         return Products.get_categorie(categorie)
 
     if action == "ver_carrinho":

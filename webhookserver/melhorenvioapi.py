@@ -39,6 +39,7 @@ def calcular_frete(req):
         "POST", menviourl, headers=headers, data=payload)
 
     data = response.json()
+    print(data)
 
     if 'error' in data[1]:
         valorsedex = "Não disponível"
